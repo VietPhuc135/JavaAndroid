@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        android:gravity="center">
+
+        <RadioGroup
+            android:id="@+id/radioGroup3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButton3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Original Code"
+                android:layout_marginLeft="10dp"
+                android:checked="true"/>
+
+            <RadioButton
+                android:id="@+id/radioButton32"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Refactored Code"
+                android:layout_marginLeft="50dp"/>
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btnStart3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start"
+            android:layout_marginRight="20dp"/>
+
+        <Button
+            android:id="@+id/btnStop3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stop"
+            android:layout_marginLeft="20dp"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Code: Original"
+        android:textColor="#000000"
+        android:textSize="22dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:id="@+id/txtNoGC3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No. of GCs: "
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/txtElapsed3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Elapsed time (msec): "
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/txtAvgNo3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Avg. no of loops (per GC): "
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/txtAvgTime3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Avg. time between GCs (msec): "
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/txtAvgHeap3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Avg. heap size (per GC, msec): "
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/darker_gray" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Code: Lambda"
+        android:textColor="#000000"
+        android:textSize="22dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:id="@+id/txtNoGC32"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No. of GCs: "
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/txtElapsed32"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Elapsed time (msec): "
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/txtAvgNo32"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Avg. no of loops (per GC): "
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/txtAvgTime32"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Avg. time between GCs (msec): "
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/txtAvgHeap32"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Avg. heap size (per GC, msec): "
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"/>
+</LinearLayout>
