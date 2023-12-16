@@ -7,66 +7,266 @@
     android:orientation="vertical"
     tools:context=".MainActivity" >
 
-    <TabHost
-        android:id="@+id/tabhost"
+<!--    <TabHost-->
+<!--        android:id="@+id/tabhost"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:orientation="vertical">-->
+
+<!--            <TabWidget-->
+<!--                android:id="@android:id/tabs"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content" />-->
+
+<!--            <FrameLayout-->
+<!--                android:id="@android:id/tabcontent"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent">-->
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/Iterator"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="vertical">-->
+
+<!--                    <include layout="@layout/activity_iterator"/>-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/Foreach"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="vertical">-->
+
+<!--                    <include layout="@layout/activity_foreach"/>-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/Lambda"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="vertical">-->
+
+<!--                    <include layout="@layout/activity_lambda"/>-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/Stream"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="vertical">-->
+
+<!--                    <include layout="@layout/activity_stream"/>-->
+
+<!--                </LinearLayout>-->
+<!--            </FrameLayout>-->
+<!--        </LinearLayout>-->
+<!--    </TabHost>-->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        <Button
+            android:id="@+id/btnIterator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Iterator"
+            android:layout_marginLeft="2dp"/>
 
-            <TabWidget
-                android:id="@android:id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btnForeach"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Foreach"
+            android:layout_marginLeft="2dp"/>
 
-            <FrameLayout
-                android:id="@android:id/tabcontent"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+        <Button
+            android:id="@+id/btnLambda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lambda"
+            android:layout_marginLeft="2dp"/>
 
-                <LinearLayout
-                    android:id="@+id/Iterator"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+        <Button
+            android:id="@+id/btnStream"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stream"
+            android:layout_marginLeft="2dp"/>
 
-                    <include layout="@layout/activity_iterator"/>
+    </LinearLayout>
 
-                </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        android:gravity="center">
 
-                <LinearLayout
-                    android:id="@+id/Foreach"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+        <RadioGroup
+            android:id="@+id/radioGroup1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-                    <include layout="@layout/activity_foreach"/>
+            <RadioButton
+                android:id="@+id/radioButton1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Original Code"
+                android:layout_marginLeft="10dp"
+                android:checked="true"/>
 
-                </LinearLayout>
+            <RadioButton
+                android:id="@+id/radioButton12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Refactored Code"
+                android:layout_marginLeft="50dp"/>
+        </RadioGroup>
+    </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/Lambda"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
 
-                    <include layout="@layout/activity_lambda"/>
+        <Button
+            android:id="@+id/btnStart1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start"
+            android:layout_marginRight="20dp"/>
 
-                </LinearLayout>
+        <Button
+            android:id="@+id/btnStop1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stop"
+            android:layout_marginLeft="20dp"/>
+    </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/Stream"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Code: Original"
+        android:textColor="#000000"
+        android:textSize="22dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="20dp"/>
 
-                    <include layout="@layout/activity_stream"/>
+    <TextView
+        android:id="@+id/txtNoGC1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No. of GCs: "
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"/>
 
-                </LinearLayout>
-            </FrameLayout>
-        </LinearLayout>
-    </TabHost>
+    <TextView
+        android:id="@+id/txtElapsed1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Elapsed time (msec): "
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/txtAvgNo1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Avg. no of loops (per GC): "
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/txtAvgTime1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Avg. time between GCs (msec): "
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/txtAvgHeap1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Avg. heap size (per GC, msec): "
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/darker_gray" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Code: Iterator"
+        android:textColor="#000000"
+        android:textSize="22dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:id="@+id/txtNoGC12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No. of GCs: "
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/txtElapsed12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Elapsed time (msec): "
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/txtAvgNo12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Avg. no of loops (per GC): "
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/txtAvgTime12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Avg. time between GCs (msec): "
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/txtAvgHeap12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Avg. heap size (per GC, msec): "
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:layout_marginLeft="10dp"/>
 </LinearLayout>

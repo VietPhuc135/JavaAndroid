@@ -2,6 +2,7 @@ package com.example.impactjava;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Debug;
 import android.os.SystemClock;
@@ -24,43 +25,48 @@ public class MainActivity extends AppCompatActivity {
     int sum1, sum2 = 1000;
     private volatile boolean isRunning = true;
 
+    Button btnIterator, btnForeach, btnLambda, btnStream;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        // Ghi lại thời gian trước khi chạy đoạn code câu lệnh for
-//        long startTime = SystemClock.elapsedRealtime();
-//
-//        // Đoạn code câu lệnh for
-//        /*for (int i = 0; i < 10; i++) {
-//            // Các câu lệnh bạn muốn chạy trong vòng lặp for
-//            Log.d("Duration1", "Duration1: " + i + " msec");
-//        }*/
+        btnIterator = findViewById(R.id.btnIterator);
+        btnForeach = findViewById(R.id.btnForeach);
+        btnLambda = findViewById(R.id.btnLambda);
+        btnStream = findViewById(R.id.btnStream);
 
-//        //List<Integer> values = createIntegerList(1000);
-//        //List<Integer> values = Arrays.asList(1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000);
-//
-//        /*for (int i = 0; i < values.size(); i++) {
-//            sum += values.get(i);
-//        }*/
-//        Iterator<Integer> iterator = values.iterator();
-//        while (iterator.hasNext()) {
-//            sum += iterator.next();
-//        }
-//
-//        // Ghi lại thời gian sau khi chạy đoạn code câu lệnh for
-//        long endTime = SystemClock.elapsedRealtime();
-//
-//        // Tính thời gian chạy của đoạn code câu lệnh for
-//        long duration = endTime - startTime;
-//
-//        System.out.println("Tổng: " + sum);
-//        System.out.println("Thời gian chạy: " + duration + " msec");
-//
-//        // Hiển thị thời gian chạy trên Log
-//        Log.d("Duration", "Duration: " + duration + " msec");
-//        Toast.makeText(MainActivity.this, "Duration: " + duration + " msec", Toast.LENGTH_LONG).show();
+        btnIterator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        btnForeach.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1 = new Intent(MainActivity.this, ForeachActivity.class);
+                startActivity(intent1);
+            }
+        });
+
+        btnLambda.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent2 = new Intent(MainActivity.this, Lambda.class);
+                startActivity(intent2);
+            }
+        });
+
+        btnStream.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent3 = new Intent(MainActivity.this, Stream.class);
+                startActivity(intent3);
+            }
+        });
 
         List<Integer> values = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
@@ -140,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        tabHost = findViewById(R.id.tabhost);
+        /*tabHost = findViewById(R.id.tabhost);
         tabHost.setup();
 
         TabHost.TabSpec spec1, spec2, spec3, spec4;
@@ -181,7 +187,8 @@ public class MainActivity extends AppCompatActivity {
                         // Chọn Tab 1
                         break;
                     case 1:
-                        // Chọn Tab 2
+                        Intent intent = new Intent(MainActivity.this, ForeachActivity.class);
+                        startActivity(intent);
                         break;
                     case 2:
                         // Chọn Tab 3
@@ -191,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Mặc định hiển thị Tab 1
-        tabHost.setCurrentTab(0);
+        tabHost.setCurrentTab(0);*/
 
     }
 
