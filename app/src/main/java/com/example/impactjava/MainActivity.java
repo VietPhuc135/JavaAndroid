@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Debug;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
@@ -21,9 +22,11 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    TabHost tabHost;
     int sum1, sum2 = 1000;
-    private volatile boolean isRunning = true;
+    private volatile boolean isRunning = false;
+    private int loopCount;
+    private double totalGCRatio;
+    private Handler handler;
 
     Button btnIterator, btnForeach, btnLambda, btnStream;
 
@@ -68,11 +71,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        List<Integer> values = new ArrayList<>();
-        for (int i = 0; i < 1000; i++) {
-            values.add(i);
-        }
-
         Button startButton = findViewById(R.id.btnStart1);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 startExecution();
             }
         });
+
         Button stopButton = findViewById(R.id.btnStop1);
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,10 +87,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void stopExecution() {
+        isRunning = false;
+    }
+
+    private void startExecution() {
+        isRunning = true;
+
+        handler = new Handler();
+
+        List<Integer> values = new ArrayList<>();
+        for (int i = 0; i < 1000; i++) {
+            values.add(i);
+        }
+
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup1);
         int idChecked = radioGroup.getCheckedRadioButtonId();
         switch (idChecked){
             case R.id.radioButton1:
+                loopCount = 0;
+                totalGCRatio = 0;
+
                 new Thread(() -> {
                     long startTime = System.currentTimeMillis();
 
@@ -117,7 +135,89 @@ public class MainActivity extends AppCompatActivity {
                     txt1.setText("Elapsed time (msec): " + duration);
                 }).start();
 
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        long startTime = System.currentTimeMillis();
+                        long totalTime = 0;
+                        int loopCount = 0;
+
+                        while (isRunning) {
+                            // Thực hiện vòng lặp tính tổng
+                            long sum = 0;
+                            for (int i = 0; i < values.size(); i++) {
+                                sum += values.get(i);
+                            }
+
+                            // Gọi GC và đo thời gian
+                            System.gc();
+                            long gcStartTime = System.currentTimeMillis();
+                            System.runFinalization();
+                            long gcEndTime = System.currentTimeMillis();
+                            long gcTime = gcEndTime - gcStartTime;
+
+                            // Cập nhật thời gian tổng
+                            totalTime += (System.currentTimeMillis() - startTime) - gcTime;
+
+                            // Tăng số vòng lặp
+                            loopCount++;
+
+                            // Hiển thị kết quả trung bình
+                            final String averageText = "" + (double) loopCount / (double) totalTime;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    TextView txtAvgNo1 = (TextView) findViewById(R.id.txtAvgNo1);
+                                    txtAvgNo1.setText("Avg. no of loops (per GC): " + averageText);
+                                }
+                            });
+
+                        }
+                    }
+                }).start();
+
+                /*new Thread(() -> {
+                    //@Override
+                    //public void run() {
+                        while (isRunning) {
+                            long startTime = System.currentTimeMillis();
+
+                            // Thực hiện một số phép tính trong vòng lặp
+                            for (int i = 0; i < values.size(); i++) {
+                                sum1 += values.get(i);
+                            }
+
+                            long endTime = System.currentTimeMillis();
+                            long elapsedTime = endTime - startTime;
+
+                            // Tính tỷ lệ GC (giả sử không có yếu tố nào khác ảnh hưởng đến GC)
+                            double gcRatio = (double) (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / Runtime.getRuntime().totalMemory();
+
+                            // Cập nhật số vòng lặp và tổng tỷ lệ GC
+                            synchronized (this) {
+                                loopCount++;
+                                totalGCRatio += gcRatio;
+                            }
+
+                            // Cập nhật giao diện người dùng với tỷ lệ GC trung bình hiện tại
+                            //handler.post(new Runnable() {
+                            //    @Override
+                            //    public void run() {
+                            runOnUiThread(() -> {
+                                    double averageGCRatio = totalGCRatio / loopCount;
+                                    TextView txtAvgNo1 = (TextView) findViewById(R.id.txtAvgNo1);
+                                    txtAvgNo1.setText("Average GC Ratio: " + averageGCRatio);
+                            });
+                            //    }
+                            //});
+                        }
+                    //}
+                }).start();*/
+
             case R.id.radioButton12:
+                loopCount = 0;
+                totalGCRatio = 0;
+
                 new Thread(() -> {
                     long startTime = System.currentTimeMillis();
 
@@ -144,69 +244,87 @@ public class MainActivity extends AppCompatActivity {
                     txt2.setText("Elapsed time (msec): " + duration1);
                 }).start();
 
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        long startTime = System.currentTimeMillis();
+                        long totalTime = 0;
+                        int loopCount = 0;
+
+                        while (isRunning) {
+                            // Thực hiện vòng lặp tính tổng
+                            long sum = 0;
+                            Iterator<Integer> iterator = values.iterator();
+
+                            while (iterator.hasNext()) {
+                                sum += iterator.next();
+                            }
+
+                            // Gọi GC và đo thời gian
+                            System.gc();
+                            long gcStartTime = System.currentTimeMillis();
+                            System.runFinalization();
+                            long gcEndTime = System.currentTimeMillis();
+                            long gcTime = gcEndTime - gcStartTime;
+
+                            // Cập nhật thời gian tổng
+                            totalTime += (System.currentTimeMillis() - startTime) - gcTime;
+
+                            // Tăng số vòng lặp
+                            loopCount++;
+
+                            // Hiển thị kết quả trung bình
+                            final String averageText = "" + (double) loopCount / (double) totalTime;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    TextView txtAvgNo12 = (TextView) findViewById(R.id.txtAvgNo12);
+                                    txtAvgNo12.setText("Avg. no of loops (per GC): " + averageText);
+                                }
+                            });
+
+                        }
+                    }
+                }).start();
+
+                /*new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while (isRunning) {
+                            long startTime = System.currentTimeMillis();
+
+                            // Thực hiện một số phép tính trong vòng lặp
+                            Iterator<Integer> iterator = values.iterator();
+
+                            while (iterator.hasNext()) {
+                                sum2 += iterator.next();
+                            }
+
+                            long endTime = System.currentTimeMillis();
+                            long elapsedTime = endTime - startTime;
+
+                            // Tính tỷ lệ GC (giả sử không có yếu tố nào khác ảnh hưởng đến GC)
+                            double gcRatio = (double) (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / Runtime.getRuntime().totalMemory();
+
+                            // Cập nhật số vòng lặp và tổng tỷ lệ GC
+                            synchronized (this) {
+                                loopCount++;
+                                totalGCRatio += gcRatio;
+                            }
+
+                            // Cập nhật giao diện người dùng với tỷ lệ GC trung bình hiện tại
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    double averageGCRatio = totalGCRatio / loopCount;
+                                    TextView txtAvgNo2 = (TextView) findViewById(R.id.txtAvgNo12);
+                                    txtAvgNo2.setText("Average GC Ratio: " + averageGCRatio);
+                                }
+                            });
+                        }
+                    }
+                }).start();*/
+
         }
-
-        /*tabHost = findViewById(R.id.tabhost);
-        tabHost.setup();
-
-        TabHost.TabSpec spec1, spec2, spec3, spec4;
-        // Tab 1
-        spec1 = tabHost.newTabSpec("Tab One");
-        spec1.setContent(R.id.Iterator);
-        spec1.setIndicator("Iterator");
-        tabHost.addTab(spec1);
-
-        // Tab 2
-        spec2 = tabHost.newTabSpec("Tab Two");
-        spec2.setContent(R.id.Foreach);
-        spec2.setIndicator("Foreach");
-        tabHost.addTab(spec2);
-
-        // Tab 3
-        spec3 = tabHost.newTabSpec("Tab Three");
-        spec3.setContent(R.id.Lambda);
-        spec3.setIndicator("Lambda");
-        tabHost.addTab(spec3);
-
-        // Tab 4
-        spec4 = tabHost.newTabSpec("Tab Three");
-        spec4.setContent(R.id.Stream);
-        spec4.setIndicator("Stream");
-        tabHost.addTab(spec4);
-
-        // Chuyển đổi giữa các tab
-        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
-            @Override
-            public void onTabChanged(String tabId) {
-                // Lưu trữ tab hiện tại
-                int selectedTab = tabHost.getCurrentTab();
-
-                // Xử lý logic khi chuyển đổi giữa các tab
-                switch (selectedTab) {
-                    case 0:
-                        // Chọn Tab 1
-                        break;
-                    case 1:
-                        Intent intent = new Intent(MainActivity.this, ForeachActivity.class);
-                        startActivity(intent);
-                        break;
-                    case 2:
-                        // Chọn Tab 3
-                        break;
-                }
-            }
-        });
-
-        // Mặc định hiển thị Tab 1
-        tabHost.setCurrentTab(0);*/
-
-    }
-
-    private void stopExecution() {
-        isRunning = false;
-    }
-
-    private void startExecution() {
-        isRunning = true;
     }
 }
