@@ -8,6 +8,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+        <Button
+            android:id="@+id/btnIterator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Iterator"
+            android:layout_marginLeft="2dp"/>
+
+        <Button
+            android:id="@+id/btnForeach"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Foreach"
+            android:layout_marginLeft="2dp"/>
+
+        <Button
+            android:id="@+id/btnLambda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lambda"
+            android:layout_marginLeft="2dp"/>
+
+        <Button
+            android:id="@+id/btnStream"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stream"
+            android:layout_marginLeft="2dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginTop="15dp"
         android:gravity="center">
 
