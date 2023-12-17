@@ -2,6 +2,7 @@ package com.example.impactjava;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Debug;
 import android.os.SystemClock;
@@ -13,6 +14,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -21,9 +23,14 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     TabHost tabHost;
-    int sum1, sum2 = 1000;
-    private volatile boolean isRunning = true;
+    int sum, suml , sum1, sum2 = 1000;
+     volatile boolean isRunning = true;
+    int gcCount ;
 
+    private WeakReference<GarbageCollectionWatcher> gcWatcher
+            = new WeakReference<>(new GarbageCollectionWatcher());
+
+    @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,6 +147,70 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+
+        RadioGroup radioGroupLamba = (RadioGroup) findViewById(R.id.radioGroup3);
+        int idCheckedLamba = radioGroupLamba.getCheckedRadioButtonId();
+        switch (idCheckedLamba){
+            case R.id.radioButton3:
+                new Thread(() -> {
+                    // Bắt đầu tính thời gian
+                    long startTime = System.currentTimeMillis();
+
+                    while (isRunning) {
+                        helper(() -> suml++);
+                    }
+
+                    // Kết thúc tính thời gian
+                    long endTime = System.currentTimeMillis();
+                    long duration = endTime - startTime; // Thời gian chạy câu lệnh trong mili giây
+
+                    runOnUiThread(() -> {
+                        System.out.println("Tổng: " + suml);
+                        System.out.println("Thời gian chạy: " + duration + " msec");
+
+                        // Hiển thị thời gian chạy trên Log
+                        Log.d("Duration", "Duration: " + duration + " msec");
+                        Toast.makeText(MainActivity.this, "Duration: " + duration + " msec", Toast.LENGTH_LONG).show();
+                        if (!isRunning) {
+                            gcWatcher.get().collectMemoryUsageInformation();
+                        }
+                    });
+                    TextView txt1 = (TextView) findViewById(R.id.txtElapsed3);
+                    txt1.setText("Elapsed time (msec): " + duration);
+                }).start();
+
+            case R.id.radioButton32:
+                Runnable action = () -> sum++;
+
+                new Thread(() -> {
+                    // Bắt đầu tính thời gian
+                    long startTime = System.currentTimeMillis();
+
+                    while (isRunning) {
+                        helper(action);
+                    }
+
+                    // Kết thúc tính thời gian
+                    long endTime = System.currentTimeMillis();
+                    long duration = endTime - startTime; // Thời gian chạy câu lệnh trong mili giây
+
+                    runOnUiThread(() -> {
+                        System.out.println("Tổng: " + sum);
+                        System.out.println("Thời gian chạy: " + duration + " msec");
+
+                        // Hiển thị thời gian chạy trên Log
+                        Log.d("Duration", "Duration: " + duration + " msec");
+                        Toast.makeText(MainActivity.this, "Duration: " + duration + " msec", Toast.LENGTH_LONG).show();
+                        if (!isRunning) {
+                            gcWatcher.get().collectMemoryUsageInformation();
+                        }
+                    });
+                    TextView txt1 = (TextView) findViewById(R.id.txtElapsed32);
+                    txt1.setText("Elapsed time (msec): " + duration);
+                    TextView txtGC = (TextView) findViewById(R.id.txtNoGC3);
+                    txtGC.setText("No. of GCs:: " + gcCount);
+                }).start();
+        }
         tabHost = findViewById(R.id.tabhost);
         tabHost.setup();
 
@@ -194,12 +265,39 @@ public class MainActivity extends AppCompatActivity {
         tabHost.setCurrentTab(0);
 
     }
-
-    private void stopExecution() {
+    void helper(Runnable action) {
+        action.run();
+    }
+     void stopExecution() {
         isRunning = false;
     }
 
-    private void startExecution() {
+     void startExecution() {
         isRunning = true;
+    }
+
+    private class GarbageCollectionWatcher {
+        protected void finalize() throws Throwable {
+            runOnUiThread(() -> {
+                if (gcWatcher != null) {
+                    System.out.println("gcWatcher");
+
+                    System.out.println(gcWatcher);
+                    Log.d("gc", gcWatcher.toString());
+
+                    gcCount ++ ;
+                }
+            });
+
+            // Create a new instance for the next garbage collection
+            gcWatcher = new WeakReference<>(new GarbageCollectionWatcher());
+        }
+
+        void collectMemoryUsageInformation() {
+            // Thu thập thông tin về việc sử dụng bộ nhớ ở đây
+            Runtime runtime = Runtime.getRuntime();
+            long usedMemory = runtime.totalMemory() - runtime.freeMemory();
+            System.out.println("Used Memory: " + usedMemory + " bytes");
+        }
     }
 }
