@@ -9,15 +9,16 @@ import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Iterator;
 
 public class Lambda extends AppCompatActivity {
 
     Button btnIterator, btnForeach, btnLambda, btnStream;
     volatile boolean isRunning = false;
     int gcCount;
-    int sum, suml;
+    int sum, suml,sumla;
 
     void helper(Runnable action) {
         action.run();
@@ -119,6 +120,46 @@ public class Lambda extends AppCompatActivity {
                     txt1.setText("Elapsed time (msec): " + duration);
                 }).start();
 
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        long startTime = System.currentTimeMillis();
+                        long totalTime = 0;
+                        int loopCount = 0;
+
+                        while (isRunning) {
+                            while (isRunning) {
+                                helper(() -> suml++);
+                            }
+
+                            // Gọi GC và đo thời gian
+                            System.gc();
+                            long gcStartTime = System.currentTimeMillis();
+                            System.runFinalization();
+                            long gcEndTime = System.currentTimeMillis();
+                            long gcTime = gcEndTime - gcStartTime;
+
+                            // Cập nhật thời gian tổng
+                            totalTime += (System.currentTimeMillis() - startTime) - gcTime;
+
+                            // Tăng số vòng lặp
+                            loopCount++;
+
+                            // Hiển thị kết quả trung bình
+                            final String averageText = "" + (double) loopCount / (double) totalTime;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    TextView txtAvgNo12 = (TextView) findViewById(R.id.txtAvgNo3);
+                                    txtAvgNo12.setText("Avg. no of loops (per GC): " + averageText);
+                                }
+                            });
+
+                        }
+                    }
+                }).start();
+
             case R.id.radioButton32:
                 Runnable action = () -> sum++;
 
@@ -132,7 +173,9 @@ public class Lambda extends AppCompatActivity {
 
                     // Kết thúc tính thời gian
                     long endTime = System.currentTimeMillis();
-                    long duration = endTime - startTime; // Thời gian chạy câu lệnh trong mili giây
+                    long duration = endTime - startTime;
+                    // Thời gian chạy câu lệnh trong mili giây
+
 
                     runOnUiThread(() -> {
                         System.out.println("Tổng: " + sum);
@@ -147,6 +190,44 @@ public class Lambda extends AppCompatActivity {
                     txt1.setText("Elapsed time (msec): " + duration);
                     TextView txtGC = (TextView) findViewById(R.id.txtNoGC3);
                     txtGC.setText("No. of GCs: " + gcCount);
+                }).start();
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        long startTime = System.currentTimeMillis();
+                        long totalTime = 0;
+                        int loopCount = 0;
+
+                        while (isRunning) {
+                            while (isRunning) {
+                                helper(action);
+                            }
+                            // Gọi GC và đo thời gian
+                            System.gc();
+                            long gcStartTime = System.currentTimeMillis();
+                            System.runFinalization();
+                            long gcEndTime = System.currentTimeMillis();
+                            long gcTime = gcEndTime - gcStartTime;
+
+                            // Cập nhật thời gian tổng
+                            totalTime += (System.currentTimeMillis() - startTime) - gcTime;
+
+                            // Tăng số vòng lặp
+                            loopCount++;
+
+                            // Hiển thị kết quả trung bình
+                            final String averageText = "" + (double) loopCount / (double) totalTime;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    TextView txtAvgNo12 = (TextView) findViewById(R.id.txtAvgNo32);
+                                    txtAvgNo12.setText("Avg. no of loops (per GC): " + averageText);
+                                }
+                            });
+
+                        }
+                    }
                 }).start();
         }
     }
