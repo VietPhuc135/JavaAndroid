@@ -59,72 +59,9 @@ public class ForeachActivity extends AppCompatActivity {
                 startActivity(intent3);
             }
         });
-        Button start = findViewById(R.id.btnStart2);
-        Button stop = findViewById(R.id.btnStop2);
-        start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isRunning = true ;
-//                listNotOptimized();
-                runCodeForTenSeconds();
-            }
-        });
-        stop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isRunning = false ;
-                runCodeForTenSecondsOp();
-            }
-        });
 
 
         Toast.makeText(ForeachActivity.this, "Tab Foreach", Toast.LENGTH_LONG).show();
     }
-    private void runCodeForTenSeconds() {
-        new Thread(() -> {
-            long startTime = System.currentTimeMillis();
-
-            while (isRunning && (System.currentTimeMillis() - startTime) < 10000) {
-                listNotOptimized();
-                try {
-                    Thread.sleep(1000); // Đợi 1 giây trước mỗi lần chạy
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-    private void runCodeForTenSecondsOp() {
-        new Thread(() -> {
-            long startTime = System.currentTimeMillis();
-
-            while (!isRunning && (System.currentTimeMillis() - startTime) < 10000) {
-                listOptimized();
-                try {
-                    Thread.sleep(1000); // Đợi 1 giây trước mỗi lần chạy
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-    // Code không tối ưu
-    private void listNotOptimized() {
-        List<String> list = Arrays.asList("a", "b", "c");
-        list.forEach(s ->{
-            System.out.println(s);
-            countRunnableNotOptimized++ ;
-        } );
-
-    }
-
-    // Code tối ưu
-    private void listOptimized() {
-
-        List<String> list = Arrays.asList("a", "b", "c");
-        for (String s : list) {
-            System.out.println(s);
-            countRunnableOptimized++ ;
-        }
-    }
+   
 }
