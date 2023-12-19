@@ -8,9 +8,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class ForeachActivity extends AppCompatActivity {
 
     Button btnIterator, btnForeach, btnLambda, btnStream;
+    // Biến đếm số lượng Runnable
+    private int countRunnableNotOptimized = 0;
+    private int countRunnableOptimized = 0;
+    private volatile boolean isRunning = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +60,8 @@ public class ForeachActivity extends AppCompatActivity {
             }
         });
 
+
         Toast.makeText(ForeachActivity.this, "Tab Foreach", Toast.LENGTH_LONG).show();
     }
+   
 }
