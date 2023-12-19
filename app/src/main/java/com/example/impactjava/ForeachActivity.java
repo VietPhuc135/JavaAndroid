@@ -63,5 +63,5 @@ public class ForeachActivity extends AppCompatActivity {
 
         Toast.makeText(ForeachActivity.this, "Tab Foreach", Toast.LENGTH_LONG).show();
     }
-   
+
 }

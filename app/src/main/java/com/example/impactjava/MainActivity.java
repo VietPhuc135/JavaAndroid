@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         isRunning = false;
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "NonConstantResourceId"})
     private void startExecution() {
         isRunning = true;
 
@@ -147,6 +147,8 @@ public class MainActivity extends AppCompatActivity {
                         long startTime = System.currentTimeMillis();
                         long totalTime = 0;
                         int loopCount = 0;
+                        int gcCount = 0 ;
+                        double averageGCTime = 0;
 
                         while (isRunning) {
                             // Thực hiện vòng lặp tính tổng
@@ -164,12 +166,13 @@ public class MainActivity extends AppCompatActivity {
 
                             // Cập nhật thời gian tổng
                             totalTime += (System.currentTimeMillis() - startTime) - gcTime;
-
                             // Tăng số vòng lặp
                             loopCount++;
+                            gcCount ++ ;
 
                             // Hiển thị kết quả trung bình
                             final String averageText = "" + (double) loopCount / (double) totalTime;
+
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -178,6 +181,18 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             });
 
+                        }
+                        if (!isRunning){
+                            averageGCTime = (double) totalTime / (double)gcCount;
+
+                            double finalAverageGCTime = averageGCTime;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    TextView txtAvgTime12 = (TextView) findViewById(R.id.txtAvgTime1);
+                                    txtAvgTime12.setText("Avg. time between GCs (msec): " + finalAverageGCTime);
+                                }
+                            });
                         }
                     }
                 }).start();
@@ -256,12 +271,13 @@ public class MainActivity extends AppCompatActivity {
                         long startTime = System.currentTimeMillis();
                         long totalTime = 0;
                         int loopCount = 0;
+                        int numOfGC = 0  ;
+                        double averageGCTime =0 ;
 
                         while (isRunning) {
                             // Thực hiện vòng lặp tính tổng
                             long sum = 0;
                             Iterator<Integer> iterator = values.iterator();
-
                             while (iterator.hasNext()) {
                                 sum += iterator.next();
                             }
@@ -275,21 +291,41 @@ public class MainActivity extends AppCompatActivity {
 
                             // Cập nhật thời gian tổng
                             totalTime += (System.currentTimeMillis() - startTime) - gcTime;
-
+                            numOfGC++ ;
                             // Tăng số vòng lặp
                             loopCount++;
 
                             // Hiển thị kết quả trung bình
+                             averageGCTime = (double) totalTime /(double)  numOfGC;
+
                             final String averageText = "" + (double) loopCount / (double) totalTime;
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     TextView txtAvgNo12 = (TextView) findViewById(R.id.txtAvgNo12);
                                     txtAvgNo12.setText("Avg. no of loops (per GC): " + averageText);
+
+
                                 }
                             });
 
                         }
+                        if (!isRunning){
+                            averageGCTime = (double) totalTime / (double) numOfGC;
+
+                            double finalAverageGCTime = averageGCTime;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+//                                    TextView txtAvgNo12 = (TextView) findViewById(R.id.txtAvgNo12);
+//                                    txtAvgNo12.setText("Avg. no of loops (per GC): " + averageText);
+
+                                    TextView txtAvgTime12 = (TextView) findViewById(R.id.txtAvgTime12);
+                                    txtAvgTime12.setText("Avg. time between GCs (msec): " + finalAverageGCTime);
+                                }
+                            });
+                        }
+
                     }
                 }).start();
 
