@@ -20,7 +20,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-            TabHost tabHost;
     int sum1, sum2 = 1000;
     private volatile boolean isRunning = false;
 
@@ -115,6 +114,48 @@ public class MainActivity extends AppCompatActivity {
             case R.id.radioButton1:
                 loopCount = 0;
                 totalGCRatio = 0;
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        int gcCount = 0;
+                        long startTime = System.currentTimeMillis();
+
+                        while (isRunning) {
+                            // Thực hiện vòng lặp tính tổng
+                            long sum = 0;
+                            for (int i = 0; i < values.size(); i++) {
+                                sum += values.get(i);
+                            }
+
+                            // Gọi GC và tăng số lần gọi GC
+                            System.gc();
+                            gcCount++;
+
+                            // Hiển thị số lần gọi GC
+                            /*final String gcCountText = "GC count: " + gcCount;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    gcCountTextView.setText(gcCountText);
+                                }
+                            });*/
+                        }
+
+                        // Tính thời gian thực hiện
+                        long endTime = System.currentTimeMillis();
+                        final String totalTimeText = "Total time: " + (endTime - startTime) + " ms";
+                        final String gcCountText = "No. of GCs: " + gcCount;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //gcCountTextView.setText(totalTimeText);
+                                TextView txtNo = (TextView) findViewById(R.id.txtNoGC1);
+                                txtNo.setText(gcCountText);
+                            }
+                        });
+                    }
+                }).start();
 
                 new Thread(() -> {
                     long startTime = System.currentTimeMillis();
@@ -223,6 +264,50 @@ public class MainActivity extends AppCompatActivity {
             case R.id.radioButton12:
                 loopCount = 0;
                 totalGCRatio = 0;
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        int gcCount = 0;
+                        long startTime = System.currentTimeMillis();
+
+                        while (isRunning) {
+                            // Thực hiện vòng lặp tính tổng
+                            long sum = 0;
+                            Iterator<Integer> iterator = values.iterator();
+
+                            while (iterator.hasNext()) {
+                                sum += iterator.next();
+                            }
+
+                            // Gọi GC và tăng số lần gọi GC
+                            System.gc();
+                            gcCount++;
+
+                            // Hiển thị số lần gọi GC
+                            /*final String gcCountText = "GC count: " + gcCount;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    gcCountTextView.setText(gcCountText);
+                                }
+                            });*/
+                        }
+
+                        // Tính thời gian thực hiện
+                        long endTime = System.currentTimeMillis();
+                        final String totalTimeText = "Total time: " + (endTime - startTime) + " ms";
+                        final String gcCountText = "No. of GCs: " + gcCount;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //gcCountTextView.setText(totalTimeText);
+                                TextView txtNo = (TextView) findViewById(R.id.txtNoGC1);
+                                txtNo.setText(gcCountText);
+                            }
+                        });
+                    }
+                }).start();
 
                 new Thread(() -> {
                     long startTime = System.currentTimeMillis();
@@ -334,61 +419,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
-
-    //        tabHost = findViewById(R.id.tabhost);
-//        tabHost.setup();
-//
-//        TabHost.TabSpec spec1, spec2, spec3, spec4;
-//        // Tab 1
-//        spec1 = tabHost.newTabSpec("Tab One");
-//        spec1.setContent(R.id.Iterator);
-//        spec1.setIndicator("Iterator");
-//        tabHost.addTab(spec1);
-//
-//        // Tab 2
-//        spec2 = tabHost.newTabSpec("Tab Two");
-//        spec2.setContent(R.id.Foreach);
-//        spec2.setIndicator("Foreach");
-//        tabHost.addTab(spec2);
-//
-//        // Tab 3
-//        spec3 = tabHost.newTabSpec("Tab Three");
-//        spec3.setContent(R.id.Lambda);
-//        spec3.setIndicator("Lambda");
-//        tabHost.addTab(spec3);
-//
-//        // Tab 4
-//        spec4 = tabHost.newTabSpec("Tab Three");
-//        spec4.setContent(R.id.Stream);
-//        spec4.setIndicator("Stream");
-//        tabHost.addTab(spec4);
-//
-//        // Chuyển đổi giữa các tab
-//        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
-//            @Override
-//            public void onTabChanged(String tabId) {
-//                // Lưu trữ tab hiện tại
-//                int selectedTab = tabHost.getCurrentTab();
-//
-//                // Xử lý logic khi chuyển đổi giữa các tab
-//                switch (selectedTab) {
-//                    case 0:
-//                        // Chọn Tab 1
-//                        break;
-//                    case 1:
-//                        // Chọn Tab 2
-//                        break;
-//                    case 2:
-//                        // Chọn Tab 3
-//                        break;
-//                }
-//            }
-//        });
-//
-//        // Mặc định hiển thị Tab 1
-//        tabHost.setCurrentTab(0);
-//
-//    }
 
 //     void stopExecution() {
 //        isRunning = false;
