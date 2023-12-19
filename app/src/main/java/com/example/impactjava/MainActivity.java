@@ -3,6 +3,7 @@ package com.example.impactjava;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,14 @@ public class MainActivity extends AppCompatActivity {
     int sum1, sum2 = 1000;
     private volatile boolean isRunning = false;
 
+    private boolean calculating;
+    private int count;
+
+    private long totalTime;
+    private long totalGcTime;
+
+    private Handler handler1;
+    private Runnable runnable1;
 
     private int loopCount;
     private double totalGCRatio;
@@ -91,15 +100,58 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        handler = new Handler();
+        runnable1 = new Runnable() {
+            @Override
+            public void run() {
+                calculateAverage();
+                //handler.postDelayed(this, 1000); // Chạy lại sau mỗi giây
+            }
+        };
+    }
+
+    private void calculateAverage() {
+        long startTime = System.currentTimeMillis();
+
+        int sum = 0;
+        for (int i = 0; i < 1000; i++) { // Điều chỉnh loop theo nhu cầu
+            sum += i;
+        }
+
+        long gcTime = Debug.getGlobalGcInvocationCount() - count;
+
+        totalTime += System.currentTimeMillis() - startTime;
+        totalGcTime += gcTime;
+
+        count += gcTime;
+
+        double averageGcTime = (double) totalGcTime / (double) count;
+
+        if (count > 0) {
+            double averageHeapSize = ((double) totalGcTime * 1024) / (double) count;
+            TextView txtHeap = (TextView) findViewById(R.id.txtAvgHeap1);
+            txtHeap.setText(String.format("Avg. heap size (per GC, msec): %.2f", averageHeapSize));
+            //resultTextView.setText(String.format("Trung bình kích thước heap (mỗi GC, msec): %.2f", averageHeapSize));
+        }
     }
 
     private void stopExecution() {
         isRunning = false;
+
+        calculating = false;
+        handler.removeCallbacks(runnable1);
     }
 
     @SuppressLint("SetTextI18n")
     private void startExecution() {
         isRunning = true;
+
+        calculating = true;
+        count = 0;
+        totalTime = 0;
+        totalGcTime = 0;
+
+        handler.post(runnable1);
 
         handler = new Handler();
 
@@ -302,8 +354,8 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 //gcCountTextView.setText(totalTimeText);
-                                TextView txtNo = (TextView) findViewById(R.id.txtNoGC1);
-                                txtNo.setText(gcCountText);
+                                TextView txtNo2 = (TextView) findViewById(R.id.txtNoGC12);
+                                txtNo2.setText(gcCountText);
                             }
                         });
                     }
