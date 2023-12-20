@@ -92,31 +92,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-//    private void calculateAverage() {
-//        long startTime = System.currentTimeMillis();
-//
-//        int sum = 0;
-//        for (int i = 0; i < 1000; i++) { // Điều chỉnh loop theo nhu cầu
-//            sum += i;
-//        }
-//
-//        long gcTime = Debug.getGlobalGcInvocationCount() - count;
-//
-//        totalTime += System.currentTimeMillis() - startTime;
-//        totalGcTime += gcTime;
-//
-//        count += gcTime;
-//
-//        double averageGcTime = (double) totalGcTime / (double) count;
-//
-//        if (count > 0) {
-//            double averageHeapSize = ((double) totalGcTime * 1024) / (double) count;
-//            TextView txtHeap = (TextView) findViewById(R.id.txtAvgHeap1);
-//            txtHeap.setText(String.format("Avg. heap size (per GC, msec): %.2f", averageHeapSize));
-//            //resultTextView.setText(String.format("Trung bình kích thước heap (mỗi GC, msec): %.2f", averageHeapSize));
-//        }
-//    }
-
     private void stopExecution() {
         isRunning = false;
 
@@ -210,11 +185,14 @@ public class MainActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        long startTime = System.currentTimeMillis();
+//                        long startTime = System.currentTimeMillis();
                         long totalTime = 0;
-                        int loopCount = 0;
-                        int gcCount = 0 ;
+//                        int loopCount = 0;
+//                        int gcCount = 0 ;
                         double averageGCTime = 0;
+                        long startTime = System.currentTimeMillis();
+                        int totalLoopCount = 0;
+                        int gcCount = 0;
 
                         while (isRunning) {
                             // Thực hiện vòng lặp tính tổng
@@ -232,12 +210,15 @@ public class MainActivity extends AppCompatActivity {
 
                             // Cập nhật thời gian tổng
                             totalTime += (System.currentTimeMillis() - startTime) - gcTime;
-                            // Tăng số vòng lặp
-                            loopCount++;
-                            gcCount ++ ;
+//                            // Tăng số vòng lặp
+//                            loopCount++;
+//                            gcCount ++ ;
+                            // Tăng tổng số vòng lặp và số lần GC
+                            totalLoopCount++;
+                            gcCount++;
 
                             // Hiển thị kết quả trung bình
-                            String averageText = "" + (double) loopCount / (double) totalTime;
+                            String averageText = "" + (double) totalLoopCount / gcCount;
 
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -271,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
                         long startTime = System.currentTimeMillis();
                         long totalTime = 0;
                         int gcCount = 0;
-//                        String averageHeapSizeText = "";
+                        String averageHeapSizeText = "";
 
                         while (isRunning) {
                             // Thực hiện vòng lặp tính tổng
@@ -296,13 +277,18 @@ public class MainActivity extends AppCompatActivity {
                             gcCount++;
 
                             // Tính trung bình kích thước heap mỗi GC
-                            String averageHeapSizeText = "Avg. heap size (per GC, msec): " +
+                            averageHeapSizeText = "Avg. heap size (per GC, msec): " +
                                     (double) memoryInfo.getTotalPss() / gcCount;
+
+                        }
+
+                        if (!isRunning){
+                            String heap = averageHeapSizeText;
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     TextView txtHeap = (TextView) findViewById(R.id.txtAvgHeap1);
-                                    txtHeap.setText(averageHeapSizeText);
+                                    txtHeap.setText(heap);
                                 }
                             });
                         }
@@ -431,6 +417,7 @@ public class MainActivity extends AppCompatActivity {
                         int loopCount = 0;
                         int numOfGC = 0  ;
                         double averageGCTime =0 ;
+//                        String averageText = "";
 
                         while (isRunning) {
                             // Thực hiện vòng lặp tính tổng
@@ -456,18 +443,18 @@ public class MainActivity extends AppCompatActivity {
                             // Hiển thị kết quả trung bình
                              averageGCTime = (double) totalTime /(double)  numOfGC;
 
-                            final String averageText = "" + (double) loopCount / (double) totalTime;
+                            String averageText = "" + (double) loopCount / (double) totalTime;
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     TextView txtAvgNo12 = (TextView) findViewById(R.id.txtAvgNo12);
                                     txtAvgNo12.setText("Avg. no of loops (per GC): " + averageText);
-
-
                                 }
                             });
-
                         }
+//                        TextView txtAvgNo12 = (TextView) findViewById(R.id.txtAvgNo12);
+//                        txtAvgNo12.setText("Avg. no of loops (per GC): " + averageText);
+
                         if (!isRunning){
                             averageGCTime = (double) totalTime / (double) numOfGC;
 
@@ -493,7 +480,7 @@ public class MainActivity extends AppCompatActivity {
                         long startTime = System.currentTimeMillis();
                         long totalTime = 0;
                         int gcCount = 0;
-//                        String averageHeapSizeText = "";
+                        String averageHeapSizeText = "";
 
                         while (isRunning) {
                             // Thực hiện vòng lặp tính tổng
@@ -519,13 +506,23 @@ public class MainActivity extends AppCompatActivity {
                             gcCount++;
 
                             // Tính trung bình kích thước heap mỗi GC
-                            String averageHeapSizeText = "Avg. heap size (per GC, msec): " +
+                            averageHeapSizeText = "Avg. heap size (per GC, msec): " +
                                     (double) memoryInfo.getTotalPss() / gcCount;
+//                            runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    TextView txtHeap1 = (TextView) findViewById(R.id.txtAvgHeap12);
+//                                    txtHeap1.setText(averageHeapSizeText);
+//                                }
+//                            });
+                        }
+                        if (!isRunning){
+                            String heap = averageHeapSizeText;
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     TextView txtHeap1 = (TextView) findViewById(R.id.txtAvgHeap12);
-                                    txtHeap1.setText(averageHeapSizeText);
+                                    txtHeap1.setText(heap);
                                 }
                             });
                         }

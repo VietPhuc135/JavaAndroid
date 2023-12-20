@@ -137,7 +137,7 @@
         android:layout_marginLeft="10dp"/>
 
     <TextView
-        android:id="@+id/txtAvgHeap1"
+        android:id="@+id/txtAvgHeap2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Avg. heap size (per GC, msec): "
