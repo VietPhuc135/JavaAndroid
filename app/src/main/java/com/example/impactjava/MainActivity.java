@@ -218,13 +218,13 @@ public class MainActivity extends AppCompatActivity {
                             gcCount++;
 
                             // Hiển thị kết quả trung bình
-                            String averageText = "" + (double) totalLoopCount / gcCount;
+                            double averageText = (double) totalLoopCount / gcCount;
 
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     TextView txtAvgNo1 = (TextView) findViewById(R.id.txtAvgNo1);
-                                    txtAvgNo1.setText("Avg. no of loops (per GC): " + averageText);
+                                    txtAvgNo1.setText(String.format("Avg. no of loops (per GC): %.2f", averageText));
                                 }
                             });
                         }
