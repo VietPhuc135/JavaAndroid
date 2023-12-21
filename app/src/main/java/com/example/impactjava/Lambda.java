@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
-import java.util.Iterator;
 
 public class Lambda extends AppCompatActivity {
 
@@ -135,8 +134,8 @@ public class Lambda extends AppCompatActivity {
                         // Tính thời gian thực hiện
                         long endTime = System.currentTimeMillis();
                         final String totalTimeText = "Total time: " + (endTime - startTime) + " ms";
-                        final String gcCountText = "No. of GCs: " + gcCount1;
-                        gcCount1 = 0;
+                        final String gcCountText = "No. of GCs: " + gcCount;
+
 
                         runOnUiThread(new Runnable() {
                             @Override
@@ -295,7 +294,6 @@ public class Lambda extends AppCompatActivity {
 
                             // Gọi GC và tăng số lần gọi GC
                             System.gc();
-                            gcCount++;
                         }
 
                         // Tính thời gian thực hiện
