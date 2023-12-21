@@ -127,13 +127,13 @@ public class Lambda extends AppCompatActivity {
                             }
 
                             // Gọi GC và tăng số lần gọi GC
-//                            System.gc();
-//                            try {
-//                                Thread.sleep(500);
-//                            } catch (InterruptedException e) {
-//                                e.printStackTrace();
-//                            }
-//                            gcCount++;
+                            System.gc();
+                            try {
+                                Thread.sleep(500);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            gcCount++;
                         }
 
                         // Tính thời gian thực hiện
@@ -192,7 +192,7 @@ public class Lambda extends AppCompatActivity {
                                 helper(action);
                             }
                             // Gọi GC và đo thời gian
-//                            System.gc();
+                            System.gc();
                             long gcStartTime = System.currentTimeMillis();
                             System.runFinalization();
                             long gcEndTime = System.currentTimeMillis();
@@ -251,7 +251,7 @@ public class Lambda extends AppCompatActivity {
                             }
 
                             // Gọi GC và đo thời gian
-//                            System.gc();
+                            System.gc();
                             long gcStartTime = System.currentTimeMillis();
                             System.runFinalization();
                             long gcEndTime = System.currentTimeMillis();
@@ -298,7 +298,7 @@ public class Lambda extends AppCompatActivity {
                             }
 
                             // Gọi GC và tăng số lần gọi GC
-//                            System.gc();
+                            System.gc();
                         }
 
                         // Tính thời gian thực hiện
@@ -355,9 +355,9 @@ public class Lambda extends AppCompatActivity {
                             }
 
                             // Gọi GC và đo thời gian
-//                            System.gc();
+                            System.gc();
                             long gcStartTime = System.currentTimeMillis();
-//                            System.runFinalization();
+                            System.runFinalization();
                             long gcEndTime = System.currentTimeMillis();
                             long gcTime = gcEndTime - gcStartTime;
                             try {
@@ -417,7 +417,7 @@ public class Lambda extends AppCompatActivity {
                             }
 
                             // Gọi GC và đo thời gian
-//                            System.gc();
+                            System.gc();
                             long gcStartTime = System.currentTimeMillis();
                             System.runFinalization();
                             long gcEndTime = System.currentTimeMillis();
