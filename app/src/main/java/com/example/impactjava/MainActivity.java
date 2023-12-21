@@ -301,44 +301,7 @@ public class MainActivity extends AppCompatActivity {
 //                        txtHeap.setText(averageHeapSizeText);
                     }
                 }).start();
-                        break ;
-                /*new Thread(() -> {
-                    //@Override
-                    //public void run() {
-                        while (isRunning) {
-                            long startTime = System.currentTimeMillis();
-
-                            // Thực hiện một số phép tính trong vòng lặp
-                            for (int i = 0; i < values.size(); i++) {
-                                sum1 += values.get(i);
-                            }
-
-                            long endTime = System.currentTimeMillis();
-                            long elapsedTime = endTime - startTime;
-
-                            // Tính tỷ lệ GC (giả sử không có yếu tố nào khác ảnh hưởng đến GC)
-                            double gcRatio = (double) (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / Runtime.getRuntime().totalMemory();
-
-                            // Cập nhật số vòng lặp và tổng tỷ lệ GC
-                            synchronized (this) {
-                                loopCount++;
-                                totalGCRatio += gcRatio;
-                            }
-
-                            // Cập nhật giao diện người dùng với tỷ lệ GC trung bình hiện tại
-                            //handler.post(new Runnable() {
-                            //    @Override
-                            //    public void run() {
-                            runOnUiThread(() -> {
-                                    double averageGCRatio = totalGCRatio / loopCount;
-                                    TextView txtAvgNo1 = (TextView) findViewById(R.id.txtAvgNo1);
-                                    txtAvgNo1.setText("Average GC Ratio: " + averageGCRatio);
-                            });
-                            //    }
-                            //});
-                        }
-                    //}
-                }).start();*/
+                break;
 
             case R.id.radioButton12:
                 loopCount = 0;
@@ -535,45 +498,7 @@ public class MainActivity extends AppCompatActivity {
 //                        txtHeap1.setText(averageHeapSizeText);
                     }
                 }).start();
-
-        break ;
-                /*new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (isRunning) {
-                            long startTime = System.currentTimeMillis();
-
-                            // Thực hiện một số phép tính trong vòng lặp
-                            Iterator<Integer> iterator = values.iterator();
-
-                            while (iterator.hasNext()) {
-                                sum2 += iterator.next();
-                            }
-
-                            long endTime = System.currentTimeMillis();
-                            long elapsedTime = endTime - startTime;
-
-                            // Tính tỷ lệ GC (giả sử không có yếu tố nào khác ảnh hưởng đến GC)
-                            double gcRatio = (double) (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / Runtime.getRuntime().totalMemory();
-
-                            // Cập nhật số vòng lặp và tổng tỷ lệ GC
-                            synchronized (this) {
-                                loopCount++;
-                                totalGCRatio += gcRatio;
-                            }
-
-                            // Cập nhật giao diện người dùng với tỷ lệ GC trung bình hiện tại
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    double averageGCRatio = totalGCRatio / loopCount;
-                                    TextView txtAvgNo2 = (TextView) findViewById(R.id.txtAvgNo12);
-                                    txtAvgNo2.setText("Average GC Ratio: " + averageGCRatio);
-                                }
-                            });
-                        }
-                    }
-                }).start();*/
+                break ;
 
         }
     }

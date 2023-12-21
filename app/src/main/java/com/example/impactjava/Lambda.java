@@ -3,6 +3,7 @@ package com.example.impactjava;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Debug;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
+import java.util.Iterator;
 
 public class Lambda extends AppCompatActivity {
 
@@ -108,7 +110,48 @@ public class Lambda extends AppCompatActivity {
         RadioGroup radioGroupLamba = (RadioGroup) findViewById(R.id.radioGroup3);
         int idCheckedLamba = radioGroupLamba.getCheckedRadioButtonId();
         switch (idCheckedLamba) {
-            case R.id.radioButton3:
+            case R.id.radioButton32:
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        int gcCount = 0;
+                        long startTime = System.currentTimeMillis();
+
+                        while (isRunning) {
+                            // Thực hiện vòng lặp tính tổng
+                            while (isRunning) {
+                                helper(() -> suml++);
+                            }
+
+                            // Gọi GC và tăng số lần gọi GC
+                            System.gc();
+                            gcCount++;
+
+                            // Hiển thị số lần gọi GC
+                            /*final String gcCountText = "GC count: " + gcCount;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    gcCountTextView.setText(gcCountText);
+                                }
+                            });*/
+                        }
+
+                        // Tính thời gian thực hiện
+                        long endTime = System.currentTimeMillis();
+                        final String totalTimeText = "Total time: " + (endTime - startTime) + " ms";
+                        final String gcCountText = "No. of GCs: " + gcCount++;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //gcCountTextView.setText(totalTimeText);
+                                TextView txtNo = (TextView) findViewById(R.id.txtNoGC32);
+                                txtNo.setText(gcCountText);
+                            }
+                        });
+                    }
+                }).start();
 
                 new Thread(() -> {
                     // Bắt đầu tính thời gian
@@ -131,7 +174,7 @@ public class Lambda extends AppCompatActivity {
                         Toast.makeText(Lambda.this, "Duration: " + duration + " msec", Toast.LENGTH_LONG).show();
 
                     });
-                    TextView txt1 = (TextView) findViewById(R.id.txtElapsed3);
+                    TextView txt1 = (TextView) findViewById(R.id.txtElapsed32);
                     txt1.setText("Elapsed time (msec): " + duration);
                 }).start();
 
@@ -175,10 +218,10 @@ public class Lambda extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    TextView txtAvgNo12 = (TextView) findViewById(R.id.txtAvgNo3);
+                                    TextView txtAvgNo12 = (TextView) findViewById(R.id.txtAvgNo32);
                                     txtAvgNo12.setText("Avg. no of loops (per GC): " + averageText);
-                                    TextView txtNo = (TextView) findViewById(R.id.txtNoGC3);
-                                    txtNo.setText(gcCountText);
+                                    //TextView txtNo = (TextView) findViewById(R.id.txtNoGC32);
+                                    //txtNo.setText(gcCountText);
                                 }
                             });
 
@@ -190,16 +233,109 @@ public class Lambda extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    TextView txtAvgTime12 = (TextView) findViewById(R.id.txtAvgTime3);
+                                    TextView txtAvgTime12 = (TextView) findViewById(R.id.txtAvgTime32);
                                     txtAvgTime12.setText("Avg. time between GCs (msec): " + finalAverageGCTime);
                                 }
                             });
                         }
                     }
                 }).start();
-                        break ;
-            case R.id.radioButton32:
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        long startTime = System.currentTimeMillis();
+                        long totalTime = 0;
+                        int gcCount = 0;
+                        String averageHeapSizeText = "";
+
+                        while (isRunning) {
+                            // Thực hiện vòng lặp tính tổng
+                            while (isRunning) {
+                                helper(() -> suml++);
+                            }
+
+                            // Gọi GC và đo thời gian
+                            System.gc();
+                            long gcStartTime = System.currentTimeMillis();
+                            System.runFinalization();
+                            long gcEndTime = System.currentTimeMillis();
+                            long gcTime = gcEndTime - gcStartTime;
+
+                            // Lấy thông tin về kích thước heap
+                            Debug.MemoryInfo memoryInfo = new Debug.MemoryInfo();
+                            Debug.getMemoryInfo(memoryInfo);
+
+                            // Cập nhật thời gian tổng và số lần GC
+                            totalTime += (System.currentTimeMillis() - startTime) - gcTime;
+                            gcCount++;
+
+                            // Tính trung bình kích thước heap mỗi GC
+                            averageHeapSizeText = "Avg. heap size (per GC, msec): " +
+                                    (double) memoryInfo.getTotalPss() / gcCount;
+
+                        }
+
+                        if (!isRunning){
+                            String heap = averageHeapSizeText;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    TextView txtHeap = (TextView) findViewById(R.id.txtAvgHeap32);
+                                    txtHeap.setText(heap);
+                                }
+                            });
+                        }
+//                        TextView txtHeap = (TextView) findViewById(R.id.txtAvgHeap1);
+//                        txtHeap.setText(averageHeapSizeText);
+                    }
+                }).start();
+                //break ;
+
+            case R.id.radioButton3:
                 Runnable action = () -> sum++;
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        int gcCount = 0;
+                        long startTime = System.currentTimeMillis();
+
+                        while (isRunning) {
+                            // Thực hiện vòng lặp tính tổng
+
+                            while (isRunning) {
+                                helper(action);
+                            }
+
+                            // Gọi GC và tăng số lần gọi GC
+                            System.gc();
+                            gcCount++;
+
+                            // Hiển thị số lần gọi GC
+                            /*final String gcCountText = "GC count: " + gcCount;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    gcCountTextView.setText(gcCountText);
+                                }
+                            });*/
+                        }
+
+                        // Tính thời gian thực hiện
+                        long endTime = System.currentTimeMillis();
+                        final String totalTimeText = "Total time: " + (endTime - startTime) + " ms";
+                        final String gcCountText = "No. of GCs: " + gcCount1;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //gcCountTextView.setText(totalTimeText);
+                                TextView txtNo2 = (TextView) findViewById(R.id.txtNoGC3);
+                                txtNo2.setText(gcCountText);
+                            }
+                        });
+                    }
+                }).start();
 
                 new Thread(() -> {
                     // Bắt đầu tính thời gian
@@ -224,7 +360,7 @@ public class Lambda extends AppCompatActivity {
                         Toast.makeText(Lambda.this, "Duration: " + duration + " msec", Toast.LENGTH_LONG).show();
 
                     });
-                    TextView txt1 = (TextView) findViewById(R.id.txtElapsed32);
+                    TextView txt1 = (TextView) findViewById(R.id.txtElapsed3);
                     txt1.setText("Elapsed time (msec): " + duration);
                 }).start();
 
@@ -260,7 +396,7 @@ public class Lambda extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    TextView txtAvgNo12 = (TextView) findViewById(R.id.txtAvgNo32);
+                                    TextView txtAvgNo12 = (TextView) findViewById(R.id.txtAvgNo3);
                                     txtAvgNo12.setText("Avg. no of loops (per GC): " + averageText);
                                 }
                             });
@@ -275,9 +411,9 @@ public class Lambda extends AppCompatActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    TextView txtAvgTime12 = (TextView) findViewById(R.id.txtAvgTime32);
+                                    TextView txtAvgTime12 = (TextView) findViewById(R.id.txtAvgTime3);
                                     txtAvgTime12.setText("Avg. time between GCs (msec): " + finalAverageGCTime);
-                                    TextView txtNo2 = (TextView) findViewById(R.id.txtNoGC32);
+                                    TextView txtNo2 = (TextView) findViewById(R.id.txtNoGC3);
                                     txtNo2.setText("No. of GCs: " + finalGcCount);
 
                                 }
@@ -285,7 +421,62 @@ public class Lambda extends AppCompatActivity {
                         }
                     }
                 }).start();
-                break ;
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        long startTime = System.currentTimeMillis();
+                        long totalTime = 0;
+                        int gcCount = 0;
+                        String averageHeapSizeText = "";
+
+                        while (isRunning) {
+                            // Thực hiện vòng lặp tính tổng
+                            while (isRunning) {
+                                helper(action);
+                            }
+
+                            // Gọi GC và đo thời gian
+                            System.gc();
+                            long gcStartTime = System.currentTimeMillis();
+                            System.runFinalization();
+                            long gcEndTime = System.currentTimeMillis();
+                            long gcTime = gcEndTime - gcStartTime;
+
+                            // Lấy thông tin về kích thước heap
+                            Debug.MemoryInfo memoryInfo = new Debug.MemoryInfo();
+                            Debug.getMemoryInfo(memoryInfo);
+
+                            // Cập nhật thời gian tổng và số lần GC
+                            totalTime += (System.currentTimeMillis() - startTime) - gcTime;
+                            gcCount++;
+
+                            // Tính trung bình kích thước heap mỗi GC
+                            averageHeapSizeText = "Avg. heap size (per GC, msec): " +
+                                    (double) memoryInfo.getTotalPss() / gcCount;
+//                            runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    TextView txtHeap1 = (TextView) findViewById(R.id.txtAvgHeap12);
+//                                    txtHeap1.setText(averageHeapSizeText);
+//                                }
+//                            });
+                        }
+                        if (!isRunning){
+                            String heap = averageHeapSizeText;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    TextView txtHeap1 = (TextView) findViewById(R.id.txtAvgHeap3);
+                                    txtHeap1.setText(heap);
+                                }
+                            });
+                        }
+//                        TextView txtHeap1 = (TextView) findViewById(R.id.txtAvgHeap12);
+//                        txtHeap1.setText(averageHeapSizeText);
+                    }
+                }).start();
+                //break ;
         }
     }
 }
