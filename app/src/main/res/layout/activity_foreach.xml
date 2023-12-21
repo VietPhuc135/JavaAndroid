@@ -60,23 +60,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/radioButton22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Refactored Code"
+                android:layout_marginLeft="10dp"/>
 
             <RadioButton
                 android:id="@+id/radioButton2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Original Code"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="50dp"
                 android:checked="true"/>
 
-            <RadioButton
-                android:id="@+id/radioButton22"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Refactored Code"
-                android:layout_marginLeft="50dp"/>
         </RadioGroup>
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/foreach"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -126,14 +131,14 @@
         android:textSize="20dp"
         android:layout_marginLeft="10dp"/>
 
-    <TextView
-        android:id="@+id/txtAvgNo2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Avg. no of loops (per GC): "
-        android:textColor="#000000"
-        android:textSize="20dp"
-        android:layout_marginLeft="10dp"/>
+<!--    <TextView-->
+<!--        android:id="@+id/txtAvgNo2"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Avg. no of loops (per GC): "-->
+<!--        android:textColor="#000000"-->
+<!--        android:textSize="20dp"-->
+<!--        android:layout_marginLeft="10dp"/>-->
 
     <TextView
         android:id="@+id/txtAvgTime2"
@@ -186,14 +191,14 @@
         android:textSize="20dp"
         android:layout_marginLeft="10dp"/>
 
-    <TextView
-        android:id="@+id/txtAvgNo22"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Avg. no of loops (per GC): "
-        android:textColor="#000000"
-        android:textSize="20dp"
-        android:layout_marginLeft="10dp"/>
+<!--    <TextView-->
+<!--        android:id="@+id/txtAvgNo22"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Avg. no of loops (per GC): "-->
+<!--        android:textColor="#000000"-->
+<!--        android:textSize="20dp"-->
+<!--        android:layout_marginLeft="10dp"/>-->
 
     <TextView
         android:id="@+id/txtAvgTime22"
