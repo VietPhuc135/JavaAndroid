@@ -9,12 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioGroup;
-import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -22,16 +22,22 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     int sum1, sum2 = 1000;
-    private volatile boolean isRunning = false;
-
+    private volatile boolean isRunning = false;int gcCount1= 0  ;
     private int loopCount;
     private double totalGCRatio;
-    private Handler handler;
 
     Button btnIterator, btnForeach, btnLambda, btnStream;
 
-//    private WeakReference<GarbageCollectionWatcher> gcWatcher
-//            = new WeakReference<>(new GarbageCollectionWatcher());
+    private WeakReference<GarbageCollectionWatcher> gcWatcher
+            = new WeakReference<>(new  GarbageCollectionWatcher());
+
+    private class GarbageCollectionWatcher {
+        protected void finalize() {
+            gcWatcher = new WeakReference<>(new  GarbageCollectionWatcher());
+            gcCount1 ++ ;
+            System.out.println("dem số " + gcCount1);
+        }
+    }
 
     @SuppressLint({"NonConstantResourceId", "SetTextI18n"})
     @Override
@@ -101,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
     private void startExecution() {
         isRunning = true;
 
-        handler = new Handler();
+        Handler handler = new Handler();
 
         List<Integer> values = new ArrayList<>();
         for (int i = 0; i < 1000; i++) {
@@ -130,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
 
                             // Gọi GC và tăng số lần gọi GC
                             System.gc();
-                            gcCount++;
 
                             // Hiển thị số lần gọi GC
                             /*final String gcCountText = "GC count: " + gcCount;
@@ -145,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                         // Tính thời gian thực hiện
                         long endTime = System.currentTimeMillis();
                         final String totalTimeText = "Total time: " + (endTime - startTime) + " ms";
-                        final String gcCountText = "No. of GCs: " + gcCount;
+                        final String gcCountText = "No. of GCs: " + gcCount1;
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -296,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
 //                        txtHeap.setText(averageHeapSizeText);
                     }
                 }).start();
-
+                        break ;
                 /*new Thread(() -> {
                     //@Override
                     //public void run() {
@@ -371,7 +376,7 @@ public class MainActivity extends AppCompatActivity {
                         // Tính thời gian thực hiện
                         long endTime = System.currentTimeMillis();
                         final String totalTimeText = "Total time: " + (endTime - startTime) + " ms";
-                        final String gcCountText = "No. of GCs: " + gcCount;
+                        final String gcCountText = "No. of GCs: " + gcCount++;
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -531,7 +536,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }).start();
 
-
+        break ;
                 /*new Thread(new Runnable() {
                     @Override
                     public void run() {
