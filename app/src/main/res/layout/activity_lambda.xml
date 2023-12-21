@@ -110,7 +110,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Code: Original"
+        android:text="Code: Refactored"
         android:textColor="#000000"
         android:textSize="22sp"
         android:layout_marginStart="10dp"
@@ -171,7 +171,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Code: Lambda"
+        android:text="Code: Original"
         android:textColor="#000000"
         android:textSize="22dp"
         android:layout_marginLeft="10dp"
