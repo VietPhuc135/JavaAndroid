@@ -151,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
                         long endTime = System.currentTimeMillis();
                         final String totalTimeText = "Total time: " + (endTime - startTime) + " ms";
                         final String gcCountText = "No. of GCs: " + gcCount1;
+                        gcCount1 = 0;
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -339,7 +340,7 @@ public class MainActivity extends AppCompatActivity {
                         // Tính thời gian thực hiện
                         long endTime = System.currentTimeMillis();
                         final String totalTimeText = "Total time: " + (endTime - startTime) + " ms";
-                        final String gcCountText = "No. of GCs: " + gcCount++;
+                        final String gcCountText = "No. of GCs: " + gcCount1;
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
