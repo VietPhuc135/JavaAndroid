@@ -65,7 +65,7 @@
                 android:id="@+id/radioButton42"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Refactored Code"
+                android:text="Stream Code"
                 android:layout_marginLeft="10dp"/>
 
             <RadioButton
